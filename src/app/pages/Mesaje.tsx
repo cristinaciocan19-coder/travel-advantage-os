@@ -1,6 +1,6 @@
 import { Check, Copy, FileText, MessageCircle, Send } from "lucide-react";
 import { useMemo, useState } from "react";
-import { defaultLeads, followUpMessage, introMessage, Lead, presentationMessage } from "../lib/travelOs";
+import { defaultLeads, followUpMessage, introMessage, Lead, presentationMessage, presentationVariants } from "../lib/travelOs";
 import { useLocalStorage } from "../lib/useLocalStorage";
 
 export default function Mesaje() {
@@ -91,6 +91,37 @@ export default function Mesaje() {
             </button>
           </div>
         ))}
+      </div>
+
+      <div className="space-y-5">
+        <div className="bg-white/50 backdrop-blur-xl rounded-3xl shadow-xl border border-white/70 p-10">
+          <h2 className="text-3xl font-semibold text-gray-800">Trimite prezentarea</h2>
+          <p className="text-gray-600 mt-2">Alege varianta potrivită pentru prospect și copiaz-o rapid.</p>
+        </div>
+
+        <div className="grid lg:grid-cols-3 gap-6">
+          {presentationVariants.map((variant) => (
+            <div key={variant.id} className="bg-white/50 backdrop-blur-xl rounded-2xl shadow-lg border border-white/70 p-6 space-y-5">
+              <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[#f7c5d8] to-[#ffd4e5] flex items-center justify-center shadow-lg">
+                <FileText className="w-7 h-7 text-white" />
+              </div>
+              <div>
+                <p className="text-sm text-[#4a9fca]">Prezentare prospect</p>
+                <h3 className="text-xl font-semibold text-gray-800">{variant.title}</h3>
+              </div>
+              <p className="min-h-72 rounded-2xl bg-white/60 border border-white/80 p-4 text-sm text-gray-700 leading-relaxed whitespace-pre-line">
+                {variant.text}
+              </p>
+              <button
+                onClick={() => copyText(variant.id, variant.text)}
+                className="w-full px-5 py-3 bg-gradient-to-r from-[#4a9fca] to-[#86c5da] text-white rounded-xl font-medium shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2"
+              >
+                {copied === variant.id ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
+                {copied === variant.id ? "Copiat" : "Copiază"}
+              </button>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
