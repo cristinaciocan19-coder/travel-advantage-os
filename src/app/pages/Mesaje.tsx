@@ -131,13 +131,20 @@ export default function Mesaje() {
                 {copied === variant.id ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
                 {copied === variant.id ? "Copiat" : "Copiază"}
               </button>
+              <button
+                onClick={() => copyAndOpen(`${variant.id}-whatsapp`, variant.text, "https://web.whatsapp.com")}
+                className="w-full px-5 py-3 bg-gradient-to-r from-[#f7c5d8] to-[#ffd4e5] text-white rounded-xl font-medium shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2"
+              >
+                {copied === `${variant.id}-whatsapp` ? <Check className="w-5 h-5" /> : <ExternalLink className="w-5 h-5" />}
+                {copied === `${variant.id}-whatsapp` ? "Copiat" : "Copiază + Deschide WhatsApp"}
+              </button>
               {variant.id === "presentation-full" && (
                 <button
                   onClick={() => copyAndOpen("presentation-presenton", variant.text, "https://presenton.ai")}
                   className="w-full px-5 py-3 bg-gradient-to-r from-[#f7c5d8] to-[#ffd4e5] text-white rounded-xl font-medium shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2"
                 >
                   {copied === "presentation-presenton" ? <Check className="w-5 h-5" /> : <ExternalLink className="w-5 h-5" />}
-                  {copied === "presentation-presenton" ? "Copiat" : "Copiază + Deschide Presenton"}
+                  {copied === "presentation-presenton" ? "Copiat" : "Copiază prezentarea + Deschide Presenton"}
                 </button>
               )}
             </div>

@@ -93,13 +93,13 @@ export default function Dashboard() {
         <h2 className="text-2xl font-semibold text-gray-800">Cum folosești sistemul în 10 minute pe zi</h2>
         <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-4 mt-6">
           {[
-            "Deschizi Planul de azi",
-            "Alegi un lead",
-            "Trimiți mesaj",
-            "Faci follow-up",
-            "Creezi o postare",
-            "Creezi o imagine",
-            "Trimiți prezentarea",
+            "Deschide Planul de azi",
+            "Alege sau adaugă un lead",
+            "Trimite mesajul",
+            "Fă follow-up",
+            "Creează o postare",
+            "Creează o imagine",
+            "Trimite prezentarea",
           ].map((step, index) => (
             <div key={step} className="bg-white/50 rounded-2xl border border-white/70 p-4 flex items-center gap-3">
               <span className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#4a9fca] to-[#86c5da] text-white font-semibold flex items-center justify-center flex-shrink-0">
