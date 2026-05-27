@@ -2,23 +2,24 @@ import { Plus, Send, UserPlus, Instagram, ListChecks, Bell, Users, MessageCircle
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { NavLink } from "react-router";
 import { dailyPlan } from "../lib/travelOs";
-import { useLocalStorage } from "../lib/useLocalStorage";
+import { useProfile } from "../lib/hooks/useProfile";
 import AiCreator from "../components/AiCreator";
 
 export default function Dashboard() {
-  const [tasks, setTasks] = useLocalStorage<Record<string, boolean>>("taos-daily-plan", {});
+  const { profile, updateProfile } = useProfile();
+  const tasks = profile?.daily_tasks || {};
 
   const plan = [
     { title: dailyPlan[0], description: "Începe conversații calde cu oameni din comunitatea ta", icon: Users, path: "/leaduri" },
-    { title: dailyPlan[1], description: "Copiază mesajul intro potrivit pentru persoana aleasă", icon: MessageCircle, path: "/mesaje" },
+    { title: dailyPlan[1], description: "Copiează mesajul intro potrivit pentru persoana aleasă", icon: MessageCircle, path: "/mesaje" },
     { title: dailyPlan[2], description: "Răspunde la mesajele primite și continuă conversațiile", icon: Send, path: "/mesaje" },
     { title: dailyPlan[3], description: "Împărtășește o poveste scurtă din zona de travel", icon: FileText, path: "/postari-sociale" },
-    { title: dailyPlan[4], description: "Copiază promptul și creează vizualul în Krea", icon: ImageIcon, path: "/postari-sociale" },
+    { title: dailyPlan[4], description: "Copiează promptul și creează vizualul în Krea", icon: ImageIcon, path: "/postari-sociale" },
     { title: dailyPlan[5], description: "Trimite prezentarea în mod calm și autentic", icon: Share2, path: "/mesaje" },
   ];
 
-  const toggleTask = (title: string) => {
-    setTasks({ ...tasks, [title]: !tasks[title] });
+  const toggleTask = async (title: string) => {
+    await updateProfile({ daily_tasks: { ...tasks, [title]: !tasks[title] } });
   };
 
   return (
@@ -46,48 +47,12 @@ export default function Dashboard() {
 
       {/* Main Action Cards */}
       <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
-        <ActionCard
-          icon={Plus}
-          title="Lead Nou"
-          description="Adaugă o persoană nouă în lista ta de contacte"
-          color="from-[#4a9fca] to-[#86c5da]"
-          path="/leaduri"
-        />
-        <ActionCard
-          icon={Send}
-          title="Generează Mesaj"
-          description="Creează un mesaj personalizat și cald"
-          color="from-[#f7c5d8] to-[#ffd4e5]"
-          path="/mesaje"
-        />
-        <ActionCard
-          icon={UserPlus}
-          title="Follow-up"
-          description="Continuă conversația cu persoanele tale"
-          color="from-[#a7d5ed] to-[#c5e5f5]"
-          path="/mesaje"
-        />
-        <ActionCard
-          icon={Instagram}
-          title="Postare Social"
-          description="Împărtășește momentul tău de travel"
-          color="from-[#ffeef5] to-[#ffd4e5]"
-          path="/postari-sociale"
-        />
-        <ActionCard
-          icon={ListChecks}
-          title="Daily Workflow"
-          description="Pașii tăi de astăzi spre libertate"
-          color="from-[#86c5da] to-[#a7d5ed]"
-          path="/workflow"
-        />
-        <ActionCard
-          icon={Bell}
-          title="Telegram Reminder"
-          description="Primește notificări pentru follow-up"
-          color="from-[#f7c5d8] to-[#ffeef5]"
-          path="/telegram-reminder"
-        />
+        <ActionCard icon={Plus} title="Lead Nou" description="Adaugă o persoană nouă în lista ta de contacte" color="from-[#4a9fca] to-[#86c5da]" path="/leaduri" />
+        <ActionCard icon={Send} title="Generează Mesaj" description="Creează un mesaj personalizat și cald" color="from-[#f7c5d8] to-[#ffd4e5]" path="/mesaje" />
+        <ActionCard icon={UserPlus} title="Follow-up" description="Continuă conversația cu persoanele tale" color="from-[#a7d5ed] to-[#c5e5f5]" path="/mesaje" />
+        <ActionCard icon={Instagram} title="Postare Social" description="Împărtășește momentul tău de travel" color="from-[#ffeef5] to-[#ffd4e5]" path="/postari-sociale" />
+        <ActionCard icon={ListChecks} title="Daily Workflow" description="Pașii tăi de astăzi spre libertate" color="from-[#86c5da] to-[#a7d5ed]" path="/workflow" />
+        <ActionCard icon={Bell} title="Telegram Reminder" description="Primește notificări pentru follow-up" color="from-[#f7c5d8] to-[#ffeef5]" path="/telegram-reminder" />
       </div>
 
       <AiCreator />
@@ -117,7 +82,6 @@ export default function Dashboard() {
       {/* Daily Plan Section */}
       <div className="space-y-5">
         <h2 className="text-2xl font-semibold text-gray-800">Planul de azi</h2>
-
         <div className="space-y-4">
           {plan.map((task, index) => (
             <WorkflowCard
@@ -165,8 +129,8 @@ function WorkflowCard({ number, title, description, icon: Icon, completed, onTog
         {number}
       </div>
       <div className="flex-1">
-        <h4 className={`text-lg font-semibold ${completed ? 'line-through text-gray-500' : 'text-gray-800'}`}>{title}</h4>
-        <p className={`text-sm ${completed ? 'text-gray-400' : 'text-gray-600'}`}>{description}</p>
+        <h4 className={`text-lg font-semibold ${completed ? "line-through text-gray-500" : "text-gray-800"}`}>{title}</h4>
+        <p className={`text-sm ${completed ? "text-gray-400" : "text-gray-600"}`}>{description}</p>
       </div>
       <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-[#f7c5d8] to-[#ffd4e5] flex items-center justify-center">
         <Icon className="w-6 h-6 text-white" />

@@ -1,36 +1,3 @@
-export type Lead = {
-  id: string;
-  name: string;
-  contact: string;
-  note: string;
-  status: "nou" | "intro" | "follow-up" | "prezentare";
-};
-
-export type Reminder = {
-  id: string;
-  leadId: string;
-  date: string;
-  note: string;
-  done: boolean;
-};
-
-export const defaultLeads: Lead[] = [
-  {
-    id: "lead-cristina-demo-1",
-    name: "Andreea",
-    contact: "Instagram",
-    note: "Iubește city break-urile și lucrează remote.",
-    status: "nou",
-  },
-  {
-    id: "lead-cristina-demo-2",
-    name: "Mădălina",
-    contact: "WhatsApp",
-    note: "A întrebat de vacanțe mai accesibile pentru familie.",
-    status: "follow-up",
-  },
-];
-
 export const dailyPlan = [
   "Aleg 3 persoane calde",
   "Trimit un mesaj intro",

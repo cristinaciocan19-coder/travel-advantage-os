@@ -1,5 +1,6 @@
-import { Home, Users, MessageCircle, Share2, Workflow, Bell, Settings } from "lucide-react";
+import { Home, Users, MessageCircle, Share2, Workflow, Bell, Settings, LogOut } from "lucide-react";
 import { NavLink } from "react-router";
+import { useAuth } from "../lib/AuthProvider";
 
 const navItems = [
   { icon: Home, label: "Dashboard", path: "/" },
@@ -12,6 +13,8 @@ const navItems = [
 ];
 
 export default function Sidebar() {
+  const { user, signOut } = useAuth();
+
   return (
     <aside className="w-72 p-6 flex flex-col gap-8">
       <div className="bg-white/40 backdrop-blur-xl rounded-3xl shadow-lg border border-white/60 p-6 flex flex-col gap-6">
@@ -26,6 +29,17 @@ export default function Sidebar() {
             <NavItem key={item.path} {...item} />
           ))}
         </nav>
+
+        <div className="mt-auto pt-4 border-t border-white/40">
+          <p className="text-xs text-gray-500 truncate mb-2">{user?.email}</p>
+          <button
+            onClick={signOut}
+            className="flex items-center gap-2 text-sm text-gray-600 hover:text-red-500 transition"
+          >
+            <LogOut className="w-4 h-4" />
+            Deconectare
+          </button>
+        </div>
       </div>
     </aside>
   );

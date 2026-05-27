@@ -1,10 +1,10 @@
 import { Check, Copy, ExternalLink, FileText, MessageCircle, Send } from "lucide-react";
 import { useMemo, useState } from "react";
-import { defaultLeads, followUpMessage, introMessage, Lead, presentationMessage, presentationVariants } from "../lib/travelOs";
-import { useLocalStorage } from "../lib/useLocalStorage";
+import { followUpMessage, introMessage, presentationMessage, presentationVariants } from "../lib/travelOs";
+import { useLeads } from "../lib/hooks/useLeads";
 
 export default function Mesaje() {
-  const [leads] = useLocalStorage<Lead[]>("taos-leads", defaultLeads);
+  const { leads } = useLeads();
   const [selectedName, setSelectedName] = useState(leads[0]?.name ?? "");
   const [copied, setCopied] = useState("");
 
@@ -99,7 +99,7 @@ export default function Mesaje() {
               className="w-full px-5 py-3 bg-gradient-to-r from-[#f7c5d8] to-[#ffd4e5] text-white rounded-xl font-medium shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2"
             >
               {copied === `${message.id}-whatsapp` ? <Check className="w-5 h-5" /> : <ExternalLink className="w-5 h-5" />}
-              {copied === `${message.id}-whatsapp` ? "Copiat" : "Copiază + Deschide WhatsApp"}
+              {copied === `${message.id}-whatsapp` ? "Copiat" : "Copiează + Deschide WhatsApp"}
             </button>
           </div>
         ))}
@@ -129,14 +129,14 @@ export default function Mesaje() {
                 className="w-full px-5 py-3 bg-gradient-to-r from-[#4a9fca] to-[#86c5da] text-white rounded-xl font-medium shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2"
               >
                 {copied === variant.id ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
-                {copied === variant.id ? "Copiat" : "Copiază"}
+                {copied === variant.id ? "Copiat" : "Copiează"}
               </button>
               <button
                 onClick={() => copyAndOpen(`${variant.id}-whatsapp`, variant.text, "https://web.whatsapp.com")}
                 className="w-full px-5 py-3 bg-gradient-to-r from-[#f7c5d8] to-[#ffd4e5] text-white rounded-xl font-medium shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2"
               >
                 {copied === `${variant.id}-whatsapp` ? <Check className="w-5 h-5" /> : <ExternalLink className="w-5 h-5" />}
-                {copied === `${variant.id}-whatsapp` ? "Copiat" : "Copiază + Deschide WhatsApp"}
+                {copied === `${variant.id}-whatsapp` ? "Copiat" : "Copiează + Deschide WhatsApp"}
               </button>
               {variant.id === "presentation-full" && (
                 <button
@@ -144,7 +144,7 @@ export default function Mesaje() {
                   className="w-full px-5 py-3 bg-gradient-to-r from-[#f7c5d8] to-[#ffd4e5] text-white rounded-xl font-medium shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2"
                 >
                   {copied === "presentation-presenton" ? <Check className="w-5 h-5" /> : <ExternalLink className="w-5 h-5" />}
-                  {copied === "presentation-presenton" ? "Copiat" : "Copiază prezentarea + Deschide Presenton"}
+                  {copied === "presentation-presenton" ? "Copiat" : "Copiează prezentarea + Deschide Presenton"}
                 </button>
               )}
             </div>

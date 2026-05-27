@@ -1,40 +1,30 @@
 import { Plus, UserRound, Trash2 } from "lucide-react";
 import { FormEvent, useState } from "react";
-import { defaultLeads, Lead } from "../lib/travelOs";
-import { useLocalStorage } from "../lib/useLocalStorage";
+import { useLeads } from "../lib/hooks/useLeads";
+import { Lead, LeadStatus } from "../lib/supabase";
 
 export default function Leaduri() {
-  const [leads, setLeads] = useLocalStorage<Lead[]>("taos-leads", defaultLeads);
+  const { leads, addLead, updateLead, deleteLead } = useLeads();
   const [name, setName] = useState("");
   const [contact, setContact] = useState("");
   const [note, setNote] = useState("");
 
-  const addLead = (event: FormEvent<HTMLFormElement>) => {
+  const handleAddLead = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!name.trim()) return;
-
-    setLeads([
-      {
-        id: crypto.randomUUID(),
-        name: name.trim(),
-        contact: contact.trim() || "Instagram",
-        note: note.trim(),
-        status: "nou",
-      },
-      ...leads,
-    ]);
+    await addLead({ name: name.trim(), contact: contact.trim() || "Instagram", note: note.trim() });
     setName("");
     setContact("");
     setNote("");
   };
 
-  const updateStatus = (id: string, status: Lead["status"]) => {
-    setLeads(leads.map((lead) => (lead.id === id ? { ...lead, status } : lead)));
+  const updateStatus = async (id: string, status: LeadStatus) => {
+    await updateLead(id, { status });
   };
 
-  const deleteLead = (id: string) => {
+  const handleDeleteLead = async (id: string) => {
     if (confirm("Ștergi definitiv acest lead?")) {
-      setLeads(leads.filter((lead) => lead.id !== id));
+      await deleteLead(id);
     }
   };
 
@@ -42,11 +32,11 @@ export default function Leaduri() {
     <div className="space-y-8">
       <div className="bg-white/50 backdrop-blur-xl rounded-3xl shadow-xl border border-white/70 p-10">
         <h1 className="text-3xl font-semibold text-gray-800">Cui trimit mesaj?</h1>
-        <p className="text-gray-600 mt-2">Păstrează oamenii calzi într-o listă simplă, salvată în browser.</p>
+        <p className="text-gray-600 mt-2">Păstrează oamenii calzi într-o listă simplă, sincronizată.</p>
       </div>
 
       <div className="grid lg:grid-cols-[0.9fr_1.1fr] gap-6">
-        <form onSubmit={addLead} className="bg-white/50 backdrop-blur-xl rounded-2xl shadow-lg border border-white/70 p-6 space-y-4">
+        <form onSubmit={handleAddLead} className="bg-white/50 backdrop-blur-xl rounded-2xl shadow-lg border border-white/70 p-6 space-y-4">
           <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[#4a9fca] to-[#86c5da] flex items-center justify-center shadow-lg">
             <Plus className="w-7 h-7 text-white" />
           </div>
@@ -79,7 +69,7 @@ export default function Leaduri() {
         </form>
 
         <div className="space-y-4">
-          {leads.map((lead) => (
+          {leads.map((lead: Lead) => (
             <div key={lead.id} className="bg-white/50 backdrop-blur-xl rounded-2xl shadow-lg border border-white/70 p-5 flex gap-4">
               <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#f7c5d8] to-[#ffd4e5] flex items-center justify-center flex-shrink-0">
                 <UserRound className="w-6 h-6 text-white" />
@@ -92,7 +82,7 @@ export default function Leaduri() {
                   </div>
                   <select
                     value={lead.status}
-                    onChange={(event) => updateStatus(lead.id, event.target.value as Lead["status"])}
+                    onChange={(event) => updateStatus(lead.id, event.target.value as LeadStatus)}
                     className="rounded-xl border border-white/80 bg-white/70 px-3 py-2 text-sm text-gray-700 outline-none"
                   >
                     <option value="nou">Nou</option>
@@ -101,7 +91,7 @@ export default function Leaduri() {
                     <option value="prezentare">Prezentare</option>
                   </select>
                   <button
-                    onClick={() => deleteLead(lead.id)}
+                    onClick={() => handleDeleteLead(lead.id)}
                     className="p-2 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 transition"
                     aria-label="Șterge lead"
                   >

@@ -1,19 +1,20 @@
 import { CalendarCheck, CheckCircle2 } from "lucide-react";
 import { dailyPlan } from "../lib/travelOs";
-import { useLocalStorage } from "../lib/useLocalStorage";
+import { useProfile } from "../lib/hooks/useProfile";
 
 export default function Workflow() {
-  const [checked, setChecked] = useLocalStorage<Record<string, boolean>>("taos-daily-plan", {});
+  const { profile, updateProfile } = useProfile();
+  const checked = profile?.daily_tasks || {};
 
-  const toggle = (task: string) => {
-    setChecked({ ...checked, [task]: !checked[task] });
+  const toggle = async (task: string) => {
+    await updateProfile({ daily_tasks: { ...checked, [task]: !checked[task] } });
   };
 
   return (
     <div className="space-y-8">
       <div className="bg-white/50 backdrop-blur-xl rounded-3xl shadow-xl border border-white/70 p-10">
         <h1 className="text-3xl font-semibold text-gray-800">Ce fac azi?</h1>
-        <p className="text-gray-600 mt-2">Un plan scurt, bifabil, salvat local pentru ritmul Cristinei.</p>
+        <p className="text-gray-600 mt-2">Un plan scurt, bifabil, sincronizat pentru ritmul Cristinei.</p>
       </div>
 
       <div className="space-y-4">
