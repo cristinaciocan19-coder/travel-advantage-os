@@ -3,6 +3,7 @@ import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { NavLink } from "react-router";
 import { dailyPlan } from "../lib/travelOs";
 import { useLocalStorage } from "../lib/useLocalStorage";
+import AiCreator from "../components/AiCreator";
 
 export default function Dashboard() {
   const [tasks, setTasks] = useLocalStorage<Record<string, boolean>>("taos-daily-plan", {});
@@ -88,6 +89,8 @@ export default function Dashboard() {
           path="/telegram-reminder"
         />
       </div>
+
+      <AiCreator />
 
       <div className="bg-white/50 backdrop-blur-xl rounded-3xl shadow-xl border border-white/70 p-10">
         <h2 className="text-2xl font-semibold text-gray-800">Cum folosești sistemul în 10 minute pe zi</h2>
