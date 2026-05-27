@@ -1,4 +1,4 @@
-import { Check, Copy, FileText, MessageCircle, Send } from "lucide-react";
+import { Check, Copy, ExternalLink, FileText, MessageCircle, Send } from "lucide-react";
 import { useMemo, useState } from "react";
 import { defaultLeads, followUpMessage, introMessage, Lead, presentationMessage, presentationVariants } from "../lib/travelOs";
 import { useLocalStorage } from "../lib/useLocalStorage";
@@ -39,6 +39,11 @@ export default function Mesaje() {
     await navigator.clipboard.writeText(text);
     setCopied(id);
     window.setTimeout(() => setCopied(""), 1800);
+  };
+
+  const copyAndOpen = async (id: string, text: string, url: string) => {
+    await copyText(id, text);
+    window.open(url, "_blank", "noopener,noreferrer");
   };
 
   return (
@@ -89,6 +94,13 @@ export default function Mesaje() {
               {copied === message.id ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
               {copied === message.id ? "Copiat" : "Copiază"}
             </button>
+            <button
+              onClick={() => copyAndOpen(`${message.id}-whatsapp`, message.text, "https://web.whatsapp.com")}
+              className="w-full px-5 py-3 bg-gradient-to-r from-[#f7c5d8] to-[#ffd4e5] text-white rounded-xl font-medium shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2"
+            >
+              {copied === `${message.id}-whatsapp` ? <Check className="w-5 h-5" /> : <ExternalLink className="w-5 h-5" />}
+              {copied === `${message.id}-whatsapp` ? "Copiat" : "Copiază + Deschide WhatsApp"}
+            </button>
           </div>
         ))}
       </div>
@@ -119,6 +131,15 @@ export default function Mesaje() {
                 {copied === variant.id ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
                 {copied === variant.id ? "Copiat" : "Copiază"}
               </button>
+              {variant.id === "presentation-full" && (
+                <button
+                  onClick={() => copyAndOpen("presentation-presenton", variant.text, "https://presenton.ai")}
+                  className="w-full px-5 py-3 bg-gradient-to-r from-[#f7c5d8] to-[#ffd4e5] text-white rounded-xl font-medium shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2"
+                >
+                  {copied === "presentation-presenton" ? <Check className="w-5 h-5" /> : <ExternalLink className="w-5 h-5" />}
+                  {copied === "presentation-presenton" ? "Copiat" : "Copiază + Deschide Presenton"}
+                </button>
+              )}
             </div>
           ))}
         </div>

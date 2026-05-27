@@ -89,6 +89,28 @@ export default function Dashboard() {
         />
       </div>
 
+      <div className="bg-white/50 backdrop-blur-xl rounded-3xl shadow-xl border border-white/70 p-10">
+        <h2 className="text-2xl font-semibold text-gray-800">Cum folosești sistemul în 10 minute pe zi</h2>
+        <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-4 mt-6">
+          {[
+            "Deschizi Planul de azi",
+            "Alegi un lead",
+            "Trimiți mesaj",
+            "Faci follow-up",
+            "Creezi o postare",
+            "Creezi o imagine",
+            "Trimiți prezentarea",
+          ].map((step, index) => (
+            <div key={step} className="bg-white/50 rounded-2xl border border-white/70 p-4 flex items-center gap-3">
+              <span className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#4a9fca] to-[#86c5da] text-white font-semibold flex items-center justify-center flex-shrink-0">
+                {index + 1}
+              </span>
+              <span className="text-sm font-medium text-gray-700">{step}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* Daily Plan Section */}
       <div className="space-y-5">
         <h2 className="text-2xl font-semibold text-gray-800">Planul de azi</h2>
