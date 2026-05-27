@@ -8,7 +8,7 @@ export type Lead = {
 
 export type Reminder = {
   id: string;
-  leadName: string;
+  leadId: string;
   date: string;
   note: string;
   done: boolean;

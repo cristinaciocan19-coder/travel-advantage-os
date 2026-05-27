@@ -1,11 +1,19 @@
+# Travel Advantage OS
 
-  # Feminine Travel Lifestyle Dashboard
+Dashboard personal pentru distribuitor Travel Advantage.
+Module: leads, mesaje template, postări sociale, workflow zilnic, reminders.
 
-  This is a code bundle for Feminine Travel Lifestyle Dashboard. The original project is available at https://www.figma.com/design/aq5h9AnztgMhUkn3AnLySw/Feminine-Travel-Lifestyle-Dashboard.
+## Setup local
+```
+npm install
+npm run dev
+```
 
-  ## Running the code
+## Deploy
+Auto pe Vercel la push în `main`.
 
-  Run `npm i` to install the dependencies.
+## Environment variables (Vercel project settings)
+- `ANTHROPIC_API_KEY` — server-side only. NICIODATĂ cu prefix `VITE_`.
 
-  Run `npm run dev` to start the development server.
-  
+## Stack
+React 18 · TypeScript · Vite · TailwindCSS · shadcn/ui · React Router · Vercel

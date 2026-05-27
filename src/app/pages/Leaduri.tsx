@@ -1,4 +1,4 @@
-import { Plus, UserRound } from "lucide-react";
+import { Plus, UserRound, Trash2 } from "lucide-react";
 import { FormEvent, useState } from "react";
 import { defaultLeads, Lead } from "../lib/travelOs";
 import { useLocalStorage } from "../lib/useLocalStorage";
@@ -30,6 +30,12 @@ export default function Leaduri() {
 
   const updateStatus = (id: string, status: Lead["status"]) => {
     setLeads(leads.map((lead) => (lead.id === id ? { ...lead, status } : lead)));
+  };
+
+  const deleteLead = (id: string) => {
+    if (confirm("Ștergi definitiv acest lead?")) {
+      setLeads(leads.filter((lead) => lead.id !== id));
+    }
   };
 
   return (
@@ -94,6 +100,13 @@ export default function Leaduri() {
                     <option value="follow-up">Follow-up</option>
                     <option value="prezentare">Prezentare</option>
                   </select>
+                  <button
+                    onClick={() => deleteLead(lead.id)}
+                    className="p-2 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 transition"
+                    aria-label="Șterge lead"
+                  >
+                    <Trash2 className="w-5 h-5" />
+                  </button>
                 </div>
                 {lead.note && <p className="text-sm text-gray-600 mt-3 leading-relaxed">{lead.note}</p>}
               </div>

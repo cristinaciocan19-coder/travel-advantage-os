@@ -6,16 +6,16 @@ import { useLocalStorage } from "../lib/useLocalStorage";
 export default function TelegramReminder() {
   const [leads] = useLocalStorage<Lead[]>("taos-leads", defaultLeads);
   const [reminders, setReminders] = useLocalStorage<Reminder[]>("taos-reminders", []);
-  const [leadName, setLeadName] = useState(leads[0]?.name ?? "");
+  const [leadId, setLeadId] = useState(leads[0]?.id ?? "");
   const [date, setDate] = useState("");
   const [note, setNote] = useState("Follow-up blând");
 
   const addReminder = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!leadName.trim() || !date) return;
+    if (!leadId || !date) return;
 
     setReminders([
-      { id: crypto.randomUUID(), leadName: leadName.trim(), date, note: note.trim(), done: false },
+      { id: crypto.randomUUID(), leadId, date, note: note.trim(), done: false },
       ...reminders,
     ]);
     setDate("");
@@ -43,12 +43,12 @@ export default function TelegramReminder() {
             <p className="text-sm text-gray-600">Alege persoana și ziua în care revii.</p>
           </div>
           <select
-            value={leadName}
-            onChange={(event) => setLeadName(event.target.value)}
+            value={leadId}
+            onChange={(event) => setLeadId(event.target.value)}
             className="w-full rounded-xl border border-white/80 bg-white/70 px-4 py-3 text-gray-800 outline-none focus:ring-2 focus:ring-[#4a9fca]"
           >
             {leads.map((lead) => (
-              <option key={lead.id} value={lead.name}>
+              <option key={lead.id} value={lead.id}>
                 {lead.name}
               </option>
             ))}
@@ -82,7 +82,10 @@ export default function TelegramReminder() {
               </div>
               <div className="flex-1">
                 <h3 className={`text-lg font-semibold ${reminder.done ? "line-through text-gray-500" : "text-gray-800"}`}>
-                  {reminder.leadName}
+                  {(() => {
+                    const lead = leads.find((l) => l.id === reminder.leadId);
+                    return lead?.name || "[Lead șters]";
+                  })()}
                 </h3>
                 <p className="text-sm text-[#4a9fca]">{reminder.date}</p>
                 <p className="text-sm text-gray-600 mt-1">{reminder.note}</p>
